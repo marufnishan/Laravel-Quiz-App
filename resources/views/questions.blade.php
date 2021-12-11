@@ -32,18 +32,18 @@
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <strong>Error!</strong> {{$error}}
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
-                  </div>
+                </div>
                 @endforeach
 
                 @if(Session::get('successMessage'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <strong>Success!</strong> {{Session::get('successMessage')}}
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
-                  </div>
+                </div>
 
                 <?php Session::forget('successMessage'); ?>
                 @endif
@@ -68,9 +68,9 @@
                                 <input type="text" class="form-control" placeholder="Search&hellip;">
                             </div>
                         </div>
-                        
+
                         <div class="col-sm-2"><Button data-toggle="modal" data-target="#Modal_add"
-                            class="btn btn-primary">Add Question</Button></div>
+                                class="btn btn-primary">Add Question</Button></div>
                     </div>
                 </div>
                 <table class="table table-striped table-hover table-bordered">
@@ -82,16 +82,106 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach($questions as $q)
                         <tr>
-                            <td>1</td>
-                            <td>Capital of Bangladesh ?</td>
+                            <td>{{$loop->index}}</td>
+                            <td>{{$q->question}}</td>
 
                             <td>
-                                <a href="#" class="text-warning" data-toggle="tooltip" data-toggle="modal"
-                                    data-target="#Modal_update">Update</a>
-                                <a href="#" class="text-danger" data-toggle="tooltip">Delete</a>
+                                <a href="#" class="text-warning" data-toggle="modal"
+                                    data-target="#Modal_Update{{$q->id}}">Update</a>
+                                <a href="#" class="text-danger" data-toggle="modal" data-target="#Modal_Delete{{$q->id}}">Delete</a>
                             </td>
                         </tr>
+
+                        <!-- Modal-Update -->
+                        <div class="modal fade" id="Modal_Update{{$q->id}}" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <form method="post" action="/update">
+                                        @csrf
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Teacher</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row" style="padding:10px;">
+                                                <label>Question :</label>
+                                            </div>
+                                            <input style="visibility: hidden;" name="id" value="{{$q->id}}">
+                                            <div class="row" style="padding:10px;">
+                                                <input name="question" value="{{$q->question}}" class="form-control">
+                                            </div>
+                                            <div class="row" style="padding:10px;">
+                                                <div class="col-md-6"><label>A :</label></div>
+                                                <div class="col-md-6"><label>B :</label></div>
+                                            </div>
+                                            <div class="row" style="padding:10px;">
+                                                <div class="col-md-6"><input name="opa" value="{{$q->a}}"></div>
+                                                <div class="col-md-6"><input name="opb" value="{{$q->b}}"></div>
+                                            </div>
+                                            <div class="row" style="padding:10px;">
+                                                <div class="col-md-6"><label>C :</label></div>
+                                                <div class="col-md-6"><label>D :</label></div>
+                                            </div>
+                                            <div class="row" style="padding:10px;">
+                                                <div class="col-md-6"><input name="opc" value="{{$q->c}}"></div>
+                                                <div class="col-md-6"><input name="opd" value="{{$q->d}}"></div>
+                                            </div>
+                                            <div class="row" style="padding:10px;">
+                                                <div class="col-md-3">
+                                                    <label>Answer :</label>
+                                                    <select name="ans" class="form-control">
+                                                        <option value="{{$q->ans}}"> {{$q->ans}} </option>
+                                                        <option value="a"> A </option>
+                                                        <option value="b"> B </option>
+                                                        <option value="c"> C </option>
+                                                        <option value="d"> D </option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-9"></div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Update Question</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal-Delet -->
+                        <div class="modal fade" id="Modal_Delete{{$q->id}}" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <form method="post" action="/delete">
+                                        @csrf
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Teacher</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <input style="visibility: hidden;" name="id" value="{{$q->id}}">
+                                            <h5>Are you sure you want to delete this question ?</h5>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-danger">Delet Question</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
 
                     </tbody>
                 </table>

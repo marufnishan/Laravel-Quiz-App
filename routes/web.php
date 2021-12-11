@@ -18,14 +18,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::any("ansDesk",function(){
-    return view('answerDesk');
-});
-
-Route::any("questions",function(){
-    return view('questions');
-});
-
 Route::any("start",function(){
     return view('start');
 });
@@ -35,3 +27,8 @@ Route::any("end",function(){
 });
 
 Route::any('add',[QuestionController::class,'add']);
+Route::any('questions',[QuestionController::class,'show']);
+Route::any('update',[QuestionController::class,'update']);
+Route::any('delete',[QuestionController::class,'delete']);
+Route::any('startquiz',[QuestionController::class,'startquiz']);
+Route::any('submitans',[QuestionController::class,'submitans']);

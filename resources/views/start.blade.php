@@ -9,7 +9,7 @@
     <div class="col-md-4">
         <h3>Are You Ready ?</h3>
         <br>
-        <a href="/ansDesk"><button class="btn btn-primary" style="width: 130px;margin-left: 5%;">Start Quiz</button></a><br><br>
+        <a href="/startquiz"><button class="btn btn-primary" style="width: 130px;margin-left: 5%;">Start Quiz</button></a><br><br>
         <a href="/"><button class="btn btn-primary" style="width: 130px;margin-left: 5%;">Home</button></a>
     </div>
     <div class="col-md-1"></div>
